@@ -1,30 +1,23 @@
+//code from Gorden Chen
+
 #ifndef NODE_H
 #define NODE_H
+
+#include <iostream>
 #include "student.h"
+
+using namespace std;
 
 class Node{
  public:
-
-  //constructor destructor
-  Node();
+  Node(Student* newStudent);
   ~Node();
-  
-  //get next Node pointer
   Node* getNext();
-
-  //get student pointer
-  Student *getStudent();
-
-  //set the next pointer to the corresponding node pointer
-  void setNext(Node* newnext);
-
-  //set value
-  void setValue(int);
-  //get value
-  int  getValue();
-
+  Student* getStudent();
+  void setNext(Node* n);
  private:
-  Student student;
-  Node *next;
+  Node* next;
+  Student* stud;
 };
+
 #endif

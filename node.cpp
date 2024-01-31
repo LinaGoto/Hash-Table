@@ -1,31 +1,29 @@
-#include "node.h"
-#include "student.h"
-#include <iostream>
+//code from Gorden Chen
 
-Node::Node(){
+#include <iostream>
+#include "student.h"
+#include "node.h"
+
+using namespace std;
+
+Node::Node(Student* newStudent){
+  stud = newStudent;
   next = NULL;
 }
 
 Node::~Node(){
+  delete stud;
   next = NULL;
-}
-
-Student *Node::getStudent() {
-  return &student;
 }
 
 Node* Node::getNext(){
   return next;
 }
 
-void Node::setNext(Node* newnext){
-  next = newnext;
+Student* Node::getStudent(){
+  return stud;
 }
 
-void Node::setValue(int newvalue) {
-  student.setValue(newvalue);
-}
-
-int Node::getValue() {
-  return student.getValue();
+void Node::setNext(Node* n){
+  next = n;
 }
