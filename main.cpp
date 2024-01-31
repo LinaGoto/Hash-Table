@@ -10,12 +10,20 @@ Lina Goto
 Linked list
  */
 
+#define	HASH_RANGE	100
+
+
 void add(Student *newstudent);
 void del(int id);
 void print(Node* next);
 void average(Node *next, int count, float sum);
 
-static Node *head = NULL;
+static Node *head[HASH_RANGE] = {NULL};
+
+//hash fuunction
+int hash(int id) {
+  return id % HASH_RANGE;
+}
 
 // Recursive call function to find out last node
 Node *findLastNode(Node *CurNode) {
@@ -77,16 +85,16 @@ void sortNode(Node *CurNode) {
   
   if ((CurNode == NULL) || (CurNode -> getNext() == NULL)) return;
   
-  PreCurNode = findPreNode(head, CurNode);
+  PreCurNode = findPreNode(head[0], CurNode);
   MinNode    = findNodeWithSmallestID(CurNode);
-  PreMinNode = findPreNode(head, MinNode);
+  PreMinNode = findPreNode(head[0], MinNode);
 
   // if MinNode is different, it will perform swap
   if (MinNode != CurNode) {
     PreMinNode -> setNext(MinNode -> getNext());
     MinNode -> setNext(CurNode);
-    if (CurNode == head) {
-      head = MinNode;
+    if (CurNode == head[0]) {
+      head[0] = MinNode;
     } else {
       PreCurNode -> setNext(MinNode);
     }
@@ -100,12 +108,12 @@ void sortNode(Node *CurNode) {
 void add(Student *newstudent) {
   Node *LstNode, *NewNode;
   
-  LstNode = findLastNode(head);
+  LstNode = findLastNode(head[0]);
   NewNode = new Node(newstudent);
   
   //very first node; add new node and set value
   if (LstNode == NULL) {
-    head = NewNode;
+    head[0] = NewNode;
   } else {
       LstNode -> setNext(NewNode);
   }
@@ -116,14 +124,14 @@ void del(int id){
   Node *CurNode, *PreNode;
 
   // find the node which is same or larger than student ID
-  CurNode = findNodeWithID(head, id);
+  CurNode = findNodeWithID(head[0], id);
   // find the previous node
-  PreNode = findPreNode(head, CurNode);
+  PreNode = findPreNode(head[0], CurNode);
 
   if (CurNode == NULL) return;
 
-  if (CurNode == head) {
-    head = CurNode -> getNext();
+  if (CurNode == head[0]) {
+    head[0] = CurNode -> getNext();
   } else {
     PreNode -> setNext(CurNode -> getNext());
   }
@@ -134,7 +142,7 @@ void del(int id){
 //printing the node
 void print (Node *next) {
   //if the node is very first print list:
-  if (next == head){
+  if (next == head[0]){
     cout << "ID  GPA  NAME " << endl;
   }
   //if the node is not null (until the last node) print the values
@@ -195,13 +203,13 @@ int main() {
 	//add the values
 	student -> setValue(id, gpa, name);
 	add(student);
-	sortNode(head);
+	sortNode(head[0]);
       }
     }
     
     //if print
     if ((input[0] == 'P') || (input[0] == 'p')){
-      print (head);
+      print (head[0]);
     }
     
     //if delete
@@ -217,7 +225,7 @@ int main() {
     //if average
       if((input[0] == 'A') || (input[0] == 'a')){
 	if((input[1] == 'V') || (input[1] == 'v')){
-	  average(head, 0, 0);
+	  average(head[0], 0, 0);
       }
     }
     
