@@ -10,7 +10,7 @@ Lina Goto
 Linked list
  */
 
-#define	HASH_RANGE	100
+#define	HASH_RANGE 101
 
 
 void add(Student *newstudent);
@@ -20,7 +20,7 @@ void average(Node *next, int count, float sum);
 
 static Node *head[HASH_RANGE] = {NULL};
 
-//hash fuunction
+//hash function
 int hash(int id) {
   return id % HASH_RANGE;
 }
@@ -107,13 +107,15 @@ void sortNode(Node *CurNode) {
 //add student in node
 void add(Student *newstudent) {
   Node *LstNode, *NewNode;
+
+  int hnumb = hash(newstudent -> getid());
   
-  LstNode = findLastNode(head[0]);
+  LstNode = findLastNode(head[hnumb]);
   NewNode = new Node(newstudent);
   
   //very first node; add new node and set value
   if (LstNode == NULL) {
-    head[0] = NewNode;
+    head[hnumb] = NewNode;
   } else {
       LstNode -> setNext(NewNode);
   }
@@ -123,15 +125,17 @@ void add(Student *newstudent) {
 void del(int id){
   Node *CurNode, *PreNode;
 
+  int hnumb = hash(id);
+  
   // find the node which is same or larger than student ID
-  CurNode = findNodeWithID(head[0], id);
+  CurNode = findNodeWithID(head[hnumb], id);
   // find the previous node
-  PreNode = findPreNode(head[0], CurNode);
+  PreNode = findPreNode(head[hnumb], CurNode);
 
   if (CurNode == NULL) return;
 
-  if (CurNode == head[0]) {
-    head[0] = CurNode -> getNext();
+  if (CurNode == head[hnumb]) {
+    head[hnumb] = CurNode -> getNext();
   } else {
     PreNode -> setNext(CurNode -> getNext());
   }
@@ -142,7 +146,10 @@ void del(int id){
 //printing the node
 void print (Node *next) {
   //if the node is very first print list:
-  if (next == head[0]){
+
+  int hnumb == 0;
+  
+  if (next == head[hnumb]){
     cout << "ID  GPA  NAME " << endl;
   }
   //if the node is not null (until the last node) print the values
@@ -153,7 +160,15 @@ void print (Node *next) {
     //recursive call
     print (next -> getNext());
     if (next -> getNext() == NULL) {
-      cout << endl;
+      hnumb ++;
+    }
+    if (hnumb == 100){
+       Student *student = next -> getStudent();
+       //print out
+       cout << student -> getid() << "  " << student -> getgpa() <<  " "  << student -> getname() << endl;
+       //recursive call
+       print (next -> getNext());
+       cout << endl;
     }
   }
 }
