@@ -6,13 +6,13 @@ using namespace std;
 
 /*
 Lina Goto
-1/3/24
-Linked list
+1/31/24
+Student list with hash table
  */
 
 #define	HASH_RANGE 101
 
-
+int hashfun (int id);
 void add(Student *newstudent);
 void del(int id);
 void print(Node* next);
@@ -21,7 +21,7 @@ void average(Node *next, int count, float sum);
 static Node *head[HASH_RANGE] = {NULL};
 
 //hash function
-int hash(int id) {
+int hashfun(int id) {
   return id % HASH_RANGE;
 }
 
@@ -107,8 +107,8 @@ void sortNode(Node *CurNode) {
 //add student in node
 void add(Student *newstudent) {
   Node *LstNode, *NewNode;
-
-  int hnumb = hash(newstudent -> getid());
+ 
+  int hnumb = hashfun(newstudent -> getid());
   
   LstNode = findLastNode(head[hnumb]);
   NewNode = new Node(newstudent);
@@ -125,7 +125,7 @@ void add(Student *newstudent) {
 void del(int id){
   Node *CurNode, *PreNode;
 
-  int hnumb = hash(id);
+  int hnumb = hashfun(id);
   
   // find the node which is same or larger than student ID
   CurNode = findNodeWithID(head[hnumb], id);
@@ -147,7 +147,7 @@ void del(int id){
 void print (Node *next) {
   //if the node is very first print list:
 
-  int hnumb == 0;
+  int hnumb = 0;
   
   if (next == head[hnumb]){
     cout << "ID  GPA  NAME " << endl;
