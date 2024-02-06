@@ -10,7 +10,7 @@ Lina Goto
 Student list with hash table
  */
 
-#define	HASH_RANGE 10
+const int HASH_RANGE = 100;
 
 int hashfun (int id);
 void add(Student *newstudent);
@@ -159,23 +159,35 @@ int longhash (){
     if (hashes < linknum) hashes = linknum;
   }
   //return 1 if ture, and return 0 if false
-  return (hashes >= maxhas);
+  return (hashes >= maxhash);
 }
 
 void rehash (){
+  //make a int with double the hashrange  int HASH_RANGE2 = 2*HASH_RANGE;
   // make a new hash table
-  Node *newhead[NEW_HASH_RANGE] = {NULL};
-  // go through the nodes and add them into the new hash table
-  int hnumb;
+  Node *newhead[HASH_RANGE2] = {NULL};
+
   //go through the hashes and nodes
-  for(hnumb = 0; hnumb < HASH_RANGE; hnumb ++){
-    Node *p = head[hnumb];
-    while (p != NULL){
-      //take the ID of the node and input it to hash function
-      int hashfun (p -> getID());
-      //input it into the new hash table
+  for(int headnum = 0; headnum < HASH_RANGE; headnum ++){
+    //keep which node
+    Node *p = head[headnum];
+    while (p != NULL){//add p to the new hash table
+
+      Node *LstNode, *NewNode;
+      Student *student;
       
-      p = p -> getNext();	
+      int hnumb = hashfun(student -> getid());
+
+      LstNode = findLastNode(newhead[hnumb]);
+      NewNode = new Node(student);
+
+      if (LstNode == NULL){
+	newhead[hnumb] = NewNode;
+      }else{
+	LstNode -> setNext(NewNode);
+      }
+
+      p = p -> getNext();
     }
   }
   
