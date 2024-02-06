@@ -30,18 +30,25 @@ scripts.txt : dummy
 	echo Ellie Goto >> $@
 	echo 463451 >> $@
 	echo 3.8 >> $@
+	echo Hoge Suzuki >> $@
+	echo 462215 >> $@
+	echo 3.1 >> $@
+	echo add >> $@
+	echo Kusa Suzuki >> $@
+	echo 411343 >> $@
+	echo 2.8 >> $@
+	echo add >> $@
+	echo Kawai Suzuki >> $@
+	echo 211343 >> $@
+	echo 2.4 >> $@
+	echo add >> $@
+	echo Bimyou Suzuki >> $@
+	echo 221343 >> $@
+	echo 2.6 >> $@
 	echo print >> $@
-	echo average >> $@
 	echo del >> $@
-	echo 123456 >> $@
+	echo 211343 >> $@
 	echo print >> $@
-	echo del >> $@
-	echo 382413 >> $@
-	echo print >> $@
-	echo del >> $@
-	echo 452215 >> $@
-	echo print >> $@
-	echo average >> $@
 	echo quit >> $@
 
 dummy :

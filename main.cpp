@@ -10,7 +10,7 @@ Lina Goto
 Student list with hash table
  */
 
-#define	HASH_RANGE 101
+#define	HASH_RANGE 10
 
 int hashfun (int id);
 void add(Student *newstudent);
@@ -79,31 +79,6 @@ Node *findNodeWithSmallestID(Node *CurNode) {
   return MinNode;
 }
 
-// Recursive function to sort the node by the ID
-void sortNode(Node *CurNode) {
-  Node *MinNode, *PreCurNode, *PreMinNode;
-  
-  if ((CurNode == NULL) || (CurNode -> getNext() == NULL)) return;
-  
-  PreCurNode = findPreNode(head[0], CurNode);
-  MinNode    = findNodeWithSmallestID(CurNode);
-  PreMinNode = findPreNode(head[0], MinNode);
-
-  // if MinNode is different, it will perform swap
-  if (MinNode != CurNode) {
-    PreMinNode -> setNext(MinNode -> getNext());
-    MinNode -> setNext(CurNode);
-    if (CurNode == head[0]) {
-      head[0] = MinNode;
-    } else {
-      PreCurNode -> setNext(MinNode);
-    }
-    sortNode(CurNode);
-  } else {
-    sortNode(CurNode -> getNext());
-  }
-}
-
 //add student in node
 void add(Student *newstudent) {
   Node *LstNode, *NewNode;
@@ -144,32 +119,14 @@ void del(int id){
 }
 
 //printing the node
-void print (Node *next) {
-  //if the node is very first print list:
-
-  int hnumb = 0;
-  
-  if (next == head[hnumb]){
-    cout << "ID  GPA  NAME " << endl;
-  }
+void print (int hnumb, Node *next) {
   //if the node is not null (until the last node) print the values
   if (next != NULL) {
     Student *student = next -> getStudent();
     //print out
     cout << student -> getid() << "  " << student -> getgpa() <<  " "  << student -> getname() << endl;
     //recursive call
-    print (next -> getNext());
-    if (next -> getNext() == NULL) {
-      hnumb ++;
-    }
-    if (hnumb == 100){
-       Student *student = next -> getStudent();
-       //print out
-       cout << student -> getid() << "  " << student -> getgpa() <<  " "  << student -> getname() << endl;
-       //recursive call
-       print (next -> getNext());
-       cout << endl;
-    }
+    print (hnumb, next -> getNext());
   }
 }
 
@@ -187,9 +144,47 @@ void average (Node *next, int count, float sum){
   }
 }
 
+int longhash (){
+  int maxhash = 4;
+  int hnumb;
+  int hashes = 0;
+  //Go through all the hashes and find the hash with maxhash linked list
+  for (hnumb = 0; hnumb < HASH_RANGE; hnumb ++){
+    Node *p = head[hnumb];
+    int linknum = 0;
+    while (p != NULL) {
+      linknum ++;
+      p = p -> getNext();
+    }
+    if (hashes < linknum) hashes = linknum;
+  }
+  //return 1 if ture, and return 0 if false
+  return (hashes >= maxhas);
+}
+
+void rehash (){
+  // make a new hash table
+  Node *newhead[NEW_HASH_RANGE] = {NULL};
+  // go through the nodes and add them into the new hash table
+  int hnumb;
+  //go through the hashes and nodes
+  for(hnumb = 0; hnumb < HASH_RANGE; hnumb ++){
+    Node *p = head[hnumb];
+    while (p != NULL){
+      //take the ID of the node and input it to hash function
+      int hashfun (p -> getID());
+      //input it into the new hash table
+      
+      p = p -> getNext();	
+    }
+  }
+  
+}
+
 int main() {
   Student *student;
   char input[10];
+  int hnumb;
   
   do {
     cout << "ADD/PRINT/DELETE/AVERAGE/QUIT: " << endl;
@@ -218,13 +213,13 @@ int main() {
 	//add the values
 	student -> setValue(id, gpa, name);
 	add(student);
-	sortNode(head[0]);
       }
     }
     
     //if print
     if ((input[0] == 'P') || (input[0] == 'p')){
-      print (head[0]);
+      cout << "  ID   GPA   NAME " << endl;
+      for (hnumb = 0; hnumb < HASH_RANGE; hnumb ++) print (hnumb, head[hnumb]);
     }
     
     //if delete
