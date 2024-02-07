@@ -10,19 +10,15 @@ Lina Goto
 Student list with hash table
  */
 
-const int HASH_RANGE = 100;
-
-int hashfun (int id);
-void add(Student *newstudent);
-void del(int id);
+int hashfun(int id, int hash);
+void add(Student *newstudent, int hash);
+void del(int id, int hash);
 void print(Node* next);
 void average(Node *next, int count, float sum);
 
-static Node *head[HASH_RANGE] = {NULL};
-
 //hash function
-int hashfun(int id) {
-  return id % HASH_RANGE;
+int hashfun(int id, int hash) {
+  return id % hash;
 }
 
 // Recursive call function to find out last node
@@ -80,10 +76,10 @@ Node *findNodeWithSmallestID(Node *CurNode) {
 }
 
 //add student in node
-void add(Student *newstudent) {
+void add(Node **head, Student *newstudent, int hash) {
   Node *LstNode, *NewNode;
  
-  int hnumb = hashfun(newstudent -> getid());
+  int hnumb = hashfun(newstudent -> getid(), hash);
   
   LstNode = findLastNode(head[hnumb]);
   NewNode = new Node(newstudent);
@@ -97,10 +93,10 @@ void add(Student *newstudent) {
 }
 
 //delete student in node
-void del(int id){
+void del(Node **head, int id, int hash){
   Node *CurNode, *PreNode;
 
-  int hnumb = hashfun(id);
+  int hnumb = hashfun(id, hash);
   
   // find the node which is same or larger than student ID
   CurNode = findNodeWithID(head[hnumb], id);
@@ -130,20 +126,7 @@ void print (int hnumb, Node *next) {
   }
 }
 
-void average (Node *next, int count, float sum){
-  //if the node is not null (until the last node) print the values
-  if (next != NULL) {
-    Student *student = next -> getStudent();
-    //recursive call
-    average (next -> getNext(), count + 1, sum + student -> getgpa());
-    if (next -> getNext() == NULL) {
-      count ++;
-      sum += student -> getgpa();
-      cout << sum / (float)count << endl;
-    }
-  }
-}
-
+#if 0
 int longhash (){
   int maxhash = 4;
   int hnumb;
@@ -176,7 +159,7 @@ void rehash (){
       Node *LstNode, *NewNode;
       Student *student;
       
-      int hnumb = hashfun(student -> getid());
+      int hnumb = hashfun(student -> getid(), HASH_RANGE);
 
       LstNode = findLastNode(newhead[hnumb]);
       NewNode = new Node(student);
@@ -192,14 +175,19 @@ void rehash (){
   }
   
 }
+#endif
 
 int main() {
   Student *student;
   char input[10];
   int hnumb;
+  Node **head;
+  int HASH_RANGE = 100;
   
+  head = (Node **)malloc(HASH_RANGE * sizeof(Node));
+
   do {
-    cout << "ADD/PRINT/DELETE/AVERAGE/QUIT: " << endl;
+    cout << "ADD/PRINT/DELETE/QUIT: " << endl;
     cin.get(input,10);
     cin.get();
     
@@ -224,7 +212,7 @@ int main() {
 	student = new Student();
 	//add the values
 	student -> setValue(id, gpa, name);
-	add(student);
+	add(head, student, HASH_RANGE);
       }
     }
     
@@ -241,19 +229,14 @@ int main() {
       cout << "Enter student id: " << endl;
       cin >> id;
       cin.get();
-      del(id);
-    }
-    
-    //if average
-      if((input[0] == 'A') || (input[0] == 'a')){
-	if((input[1] == 'V') || (input[1] == 'v')){
-	  average(head[0], 0, 0);
-      }
+      del(head, id, HASH_RANGE);
     }
     
   } while ((input[0] != 'Q') && (input[0] != 'q'));
   //end with quit
   
+  free(head);
+
   return 0;
 }
 
