@@ -148,9 +148,11 @@ int main() {
   int hnumb;
   Node **head;
   int HASH_RANGE = 100;
-  
+
+  //allocating new hash table
   head = (Node **)malloc(HASH_RANGE * sizeof(Node));
 
+  //initializing table
   for (hnumb = 0; hnumb < HASH_RANGE; hnumb ++) head[hnumb] = NULL;
 
   do {
@@ -187,11 +189,14 @@ int main() {
 	  Node **newhead = (Node **)malloc(HASH_RANGE2 * sizeof(Node));
 	  int hnumb;
 
+	  //initialze head to 0
 	  for (hnumb = 0; hnumb < HASH_RANGE2; hnumb ++) newhead[hnumb] = NULL;
-	  
+
+	  //go through head
 	  for (hnumb = 0; hnumb < HASH_RANGE; hnumb ++) {
 	    Node *p = head[hnumb];
 	    Node *n;
+	    
 	    while (p != NULL) {
 	      int newhash = hashfun(p -> getStudent() -> getid(), HASH_RANGE2);
 	      Node *LstNode = findLastNode(newhead[newhash]);
