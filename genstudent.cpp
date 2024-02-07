@@ -65,8 +65,8 @@ int main(int argc, char **argv) {
     genname(firstname);
     genname(lastname);
     cout << firstname << " " << lastname << endl;
-    cout << getid();
-    cout << getgpa();
+    cout << getid() << endl;
+    cout << getgpa() << endl;
   }
   
   cout << "print\n" << endl;
