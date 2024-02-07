@@ -24,7 +24,7 @@ static int getid(void) {
 }
 
 static float getgpa(void) {
-  /* generate value : 0 to 400 */
+  // generate value : 0 to 400
   return (float)genrandom(0, 400) / 100.;
 }
 
@@ -35,9 +35,10 @@ static void genname(char *name) {
   int namelen, i;
   namelen = genrandom(NAME_LEN_MIN, NAME_LEN_MAX);
 
-  /* Fist letter is capital */
+  // Fist letter is capital
   *name = 'A' + genrandom(0, 25);
   name ++;
+  // generate the lowe cases
   for (i = 1; i < namelen; i ++) {
     *name = 'a' + genrandom(0, 25);
     name ++;
@@ -48,7 +49,7 @@ static void genname(char *name) {
 int main(int argc, char **argv) {
   int numstudent = 10;
   int i;
-  
+
   if (argc > 1) numstudent = atoi(argv[1]);
 
   id = (int *)malloc((STUDENT_ID_MAX + 1) * sizeof(int));
@@ -57,16 +58,16 @@ int main(int argc, char **argv) {
   for (i = 0; i < STUDENT_ID_MAX + 1; i ++) id[i] = 0;
 
   for (i = 0; i < numstudent; i ++) {
-    printf("add\n");
+    cout << "add" << endl;
     genname(firstname);
     genname(lastname);
-    printf("%s %s\n", firstname, lastname);
-    printf("%d\n", getid());
-    printf("%3.2f\n", getgpa());
+    cout << firstname << " " << lastname << endl;
+    cout << getid();
+    cout << getgpa();
   }
   
-  printf("print\n");
-  printf("quit\n");
+  cout << "print\n" << endl;
+  cout << "quit"<< endl;
   
   free(id);
 
