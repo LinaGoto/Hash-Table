@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
     cout << getgpa() << endl;
   }
   
-  cout << "print\n" << endl;
+  cout << "print" << endl;
   cout << "quit"<< endl;
   
   free(id);
