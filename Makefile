@@ -12,8 +12,8 @@ linkedlist.exe : main.o node.o student.o
 %.o : %.cpp node.h student.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-scripts.txt : genstudent.exe
-	./genstudent.exe 150 > $@
+scripts.txt : genstudent.exe Makefile
+	./genstudent.exe 1500 > $@
 
 genstudent.exe : genstudent.cpp
 	$(CC) $(CFLAGS) -o $@ $^

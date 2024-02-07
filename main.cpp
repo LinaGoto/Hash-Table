@@ -126,56 +126,21 @@ void print (int hnumb, Node *next) {
   }
 }
 
-#if 0
-int longhash (){
-  int maxhash = 4;
+int longhash(Node **head, int hash){
   int hnumb;
-  int hashes = 0;
-  //Go through all the hashes and find the hash with maxhash linked list
-  for (hnumb = 0; hnumb < HASH_RANGE; hnumb ++){
+  int maxlen = 0;
+  //Go through all the maxlen and find the hash with maxhash linked list
+  for (hnumb = 0; hnumb < hash; hnumb ++){
     Node *p = head[hnumb];
     int linknum = 0;
     while (p != NULL) {
       linknum ++;
       p = p -> getNext();
     }
-    if (hashes < linknum) hashes = linknum;
+    if (maxlen < linknum) maxlen = linknum;
   }
-  //return 1 if ture, and return 0 if false
-  return (hashes >= maxhash);
+  return maxlen;
 }
-
-void rehash (){
-  //make a int with double the hashrange  int HASH_RANGE2 = 2*HASH_RANGE;
-  // make a new hash table
-  Node *newhead[HASH_RANGE2] = {NULL};
-
-  //go through the hashes and nodes
-  for(int headnum = 0; headnum < HASH_RANGE; headnum ++){
-    //keep which node
-    Node *p = head[headnum];
-    while (p != NULL){//add p to the new hash table
-
-      Node *LstNode, *NewNode;
-      Student *student;
-      
-      int hnumb = hashfun(student -> getid(), HASH_RANGE);
-
-      LstNode = findLastNode(newhead[hnumb]);
-      NewNode = new Node(student);
-
-      if (LstNode == NULL){
-	newhead[hnumb] = NewNode;
-      }else{
-	LstNode -> setNext(NewNode);
-      }
-
-      p = p -> getNext();
-    }
-  }
-  
-}
-#endif
 
 int main() {
   Student *student;
@@ -185,6 +150,8 @@ int main() {
   int HASH_RANGE = 100;
   
   head = (Node **)malloc(HASH_RANGE * sizeof(Node));
+
+  for (hnumb = 0; hnumb < HASH_RANGE; hnumb ++) head[hnumb] = NULL;
 
   do {
     cout << "ADD/PRINT/DELETE/QUIT: " << endl;
@@ -213,6 +180,43 @@ int main() {
 	//add the values
 	student -> setValue(id, gpa, name);
 	add(head, student, HASH_RANGE);
+
+	// repeat while check number of list is larger than 4
+	while (longhash(head, HASH_RANGE) >= 4) {
+	  int HASH_RANGE2 = HASH_RANGE + 1;
+	  Node **newhead = (Node **)malloc(HASH_RANGE2 * sizeof(Node));
+	  int hnumb;
+
+	  for (hnumb = 0; hnumb < HASH_RANGE2; hnumb ++) newhead[hnumb] = NULL;
+	  
+	  for (hnumb = 0; hnumb < HASH_RANGE; hnumb ++) {
+	    Node *p = head[hnumb];
+	    Node *n;
+	    while (p != NULL) {
+	      int newhash = hashfun(p -> getStudent() -> getid(), HASH_RANGE2);
+	      Node *LstNode = findLastNode(newhead[newhash]);
+
+	      if (LstNode == NULL){
+		newhead[newhash] = p;
+	      }else{
+		LstNode -> setNext(p);
+	      }
+	      // back up next Node
+	      n = p -> getNext();
+	      // reset Next Node
+	      p -> setNext(NULL);
+	      p = n;
+	    }
+	  }
+
+	  // update pointer and hash value
+	  HASH_RANGE = HASH_RANGE2;
+	  // Release previous head
+	  free(head);
+	  // Update new nead
+	  head = newhead;
+	  cout << "Hash has been updated to " << HASH_RANGE << endl;
+	}
       }
     }
     
