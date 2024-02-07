@@ -11,6 +11,8 @@
 
 static int *id = NULL;
 
+using namespace std;
+
 static int genrandom(int min, int max) {
   return (rand() % (max - min + 1)) + min;
 }
